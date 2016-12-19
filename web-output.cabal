@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                web-output
-version:             0.1.0.0
+version:             0.1.1.0
 synopsis:            Library to present content to an user via their browser
 -- description:         
 homepage:            https://github.com/danse/web-output
@@ -23,6 +23,17 @@ library
   build-depends:       base >=4.8 && <4.9,
                        temporary,
                        open-browser,
-                       directory
+                       directory,
+                       filepath
   -- hs-source-dirs:      
   default-language:    Haskell2010
+                       
+Test-Suite test
+           type: exitcode-stdio-1.0
+           main-is: test.hs
+           build-depends: base,
+                          temporary,
+                          open-browser,
+                          directory,
+                          filepath
+           default-language:    Haskell2010
