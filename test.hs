@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 import WebOutput
 
 s = ("script.js", "window.onload = alert('it works')")

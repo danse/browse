@@ -5,6 +5,7 @@ import Web.Browser (openBrowser)
 import System.IO (hPutStr, hFlush)
 import System.Directory (getTemporaryDirectory)
 import System.FilePath.Posix (combine)
+import qualified Data.Text.IO as T
 
 toTheBrowser content = do
   dir <- getTemporaryDirectory
@@ -22,7 +23,7 @@ toTheBrowser content = do
 multiToTheBrowser namesAndContents = do
   dir <- getTemporaryDirectory
   containing <- createTempDirectory dir "output"
-  mapM (uncurry writeFile) (combined containing)
+  mapM (uncurry T.writeFile) (combined containing)
   (openBrowser . fst . head) (combined containing)
     where
       combined dir = map (applyFst (combine dir)) namesAndContents

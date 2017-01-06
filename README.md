@@ -10,7 +10,7 @@ order to show the output of a script
 
 ### Output multiple files to the browser
 
-    multiToTheBrowser :: [(String, String)] -> IO ()
+    multiToTheBrowser :: [(String, Text)] -> IO ()
 
 Provided with file names and contents, the library will create a
 temporary directory, write the files with the corresponding names and
