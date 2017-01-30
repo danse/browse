@@ -1,10 +1,11 @@
-module WebOutput (toTheBrowser, multiToTheBrowser) where
+module WebOutput where
 
 import System.IO.Temp (openTempFile, createTempDirectory)
 import Web.Browser (openBrowser)
 import System.IO (hPutStr, hFlush)
 import System.Directory (getTemporaryDirectory)
-import System.FilePath.Posix (combine)
+import System.FilePath.Posix (combine, FilePath)
+import qualified Data.Text as T
 import qualified Data.Text.IO as T
 
 toTheBrowser content = do
@@ -18,13 +19,18 @@ toTheBrowser content = do
         hFlush handle
         return path
 
+data Resource = Resource {
+  location :: FilePath,
+  content :: T.Text
+}
 
--- this will open the browser on the first content
-multiToTheBrowser namesAndContents = do
+writeResource (Resource loc con) = T.writeFile loc con
+
+manyToTheBrowser resources = do
   dir <- getTemporaryDirectory
   containing <- createTempDirectory dir "output"
-  mapM (uncurry T.writeFile) (combined containing)
-  (openBrowser . fst . head) (combined containing)
-    where
-      combined dir = map (applyFst (combine dir)) namesAndContents
-      applyFst f (a, b) = (f a, b)
+  mapM writeResource (combined containing)
+  (openBrowser . location . head) (combined containing)
+  where
+    combined dir = map (applyLocation (combine dir)) resources
+    applyLocation f (Resource a b) = Resource (f a) b
