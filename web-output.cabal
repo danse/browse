@@ -20,7 +20,7 @@ library
   exposed-modules:     WebOutput
   -- other-modules:       
   -- other-extensions:    
-  build-depends:       base >=4.8 && <4.10,
+  build-depends:       base,
                        temporary,
                        open-browser,
                        directory,
