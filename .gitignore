@@ -3,3 +3,5 @@ dist/
 Setup.hs
 cabal.sandbox.config
 .stack-work
+stack.yaml
+stack.yaml.lock
