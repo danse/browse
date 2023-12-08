@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 import WebOutput
 
-s = ("script.js", "window.onload = alert('it works')")
-i = ("index.html", "<script src=\"script.js\"></script>")
+s = Resource "script.js" "window.onload = alert('it works')"
+i = Resource "index.html" "<script src=\"script.js\"></script>"
 
-main = multiToTheBrowser [i, s]
+main = manyToTheBrowser [i, s]
