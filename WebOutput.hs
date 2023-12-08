@@ -14,7 +14,7 @@ module WebOutput (
   manyToTheBrowser,
   ) where
 
-import System.IO.Temp (openTempFile, createTempDirectory)
+import Control.Exception
 import Web.Browser (openBrowser)
 import System.IO
 import System.Directory (createDirectory)
@@ -52,7 +52,7 @@ writeResource (Resource loc con) = T.writeFile loc con
 -- ignored
 manyToTheBrowser resources = do
   let containing = "browse"
-  createDirectory containing
+  try $ createDirectory containing :: IO (Either SomeException ())
   mapM_ writeResource (combined containing)
   (openBrowser . location . head) (combined containing)
   where
