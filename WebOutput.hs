@@ -23,11 +23,12 @@ import qualified Data.Text as T
 import qualified Data.Text.IO as T
 
 -- | Writes its argument to a file and opens the user's browser 
--- to show that file. The returned boolean can be ignored
+-- to show that file
 toTheBrowser content = do
   let path = "browse.html"
   writeContentToTempFile content path
   openBrowser path
+  pure ()
 
 writeContentToTempFile content fileName = do
   handle <- openFile fileName ReadWriteMode
@@ -48,13 +49,13 @@ writeResource (Resource loc con) = T.writeFile loc con
 -- | Present multiple files via the user's browser, so that they can
 -- reference each other. A directory is created, the files
 -- are written there, and the browser is opened on the first resource
--- passed as an argument to this function. The returned boolean can be
--- ignored
+-- passed as an argument to this function
 manyToTheBrowser resources = do
   let containing = "browse"
   try $ createDirectory containing :: IO (Either SomeException ())
   mapM_ writeResource (combined containing)
   (openBrowser . location . head) (combined containing)
+  pure ()
   where
     combined dir = map (applyLocation (combine dir)) resources
     applyLocation f (Resource a b) = Resource (f a) b
