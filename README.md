@@ -13,10 +13,9 @@ order to show the output of a script
     multiToTheBrowser :: [(String, Text)] -> IO ()
 
 Provided with file names and contents, the library will create a
-temporary directory, write the files with the corresponding names and
-open the user browser pointing to the first file in the list. Useful
-to show pages which require assets divided in multiple files. The user
-will be pointed to a location showing the path of the temporary
-directory in their filesystem, so that they could easily copy the
-contents and publish. Supports only Posix file systems like in a Mac
-or a Linux.
+directory, write the files with the corresponding names and open the
+user browser pointing to the first file in the list. Useful to show
+pages which require assets divided in multiple files. The user will be
+pointed to a location showing the path of the directory in their
+filesystem, so that they could easily copy the contents and
+publish. Supports only Posix file systems like in a Mac or a Linux.
