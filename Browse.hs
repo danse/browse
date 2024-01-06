@@ -8,7 +8,7 @@ linking to multiple files, for example a page linking to a local style
 file and a local Javascript file
 
 -}
-module WebOutput (
+module Browse (
   browse,
   Asset(..),
   browseLinked,
