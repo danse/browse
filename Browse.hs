@@ -15,12 +15,16 @@ module Browse (
   ) where
 
 import Control.Exception
+import Data.List.NonEmpty (nonEmpty)
+import Data.Maybe (fromMaybe)
 import Web.Browser (openBrowser)
 import System.IO
 import System.Directory (createDirectory)
 import System.FilePath
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
+
+import qualified Data.List.NonEmpty as NonEmpty
 
 -- | Writes its argument to a file and opens the user's browser 
 -- to show that file
@@ -51,12 +55,13 @@ writeAsset (Asset loc con) = T.writeFile loc con
 -- are written there, and the browser is opened on the first resource
 -- passed as an argument to this function
 browseLinked :: [Asset] -> IO ()
-browseLinked resources = do
+browseLinked resources' = do
   let containing = "browse"
+      resources = fromMaybe (error "empty asset list") $ nonEmpty resources'
   try $ createDirectory containing :: IO (Either SomeException ())
+  let combined dir = fmap (applyLocation (combine dir)) resources
   mapM_ writeAsset (combined containing)
-  (openBrowser . location . head) (combined containing)
+  (openBrowser . location . NonEmpty.head) (combined containing)
   pure ()
   where
-    combined dir = map (applyLocation (combine dir)) resources
     applyLocation f (Asset a b) = Asset (f a) b
